@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./database/e_blogger.db"
+SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./database/e_blogger.db"
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
 logger = logging.getLogger(__name__)

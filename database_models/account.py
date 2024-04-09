@@ -1,4 +1,4 @@
-from base import Base
+from .base import Base
 from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.hybrid import hybrid_property
