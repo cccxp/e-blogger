@@ -3,9 +3,8 @@ import re
 import bcrypt
 import jwt 
 import datetime
-import os
-import dotenv
 
+import config
 
 def email_check(email: str) -> bool:
     email_regex = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b')
@@ -24,7 +23,7 @@ def password_strength_check(password: str) -> tuple[bool, str]:
 
 
 def password_encryption(password: str):
-    salt = bcrypt.gensalt(rounds=12)
+    salt = bcrypt.gensalt(rounds=config.BCRYPT_ROUNDS)
     hashed_password = bcrypt.hashpw(password.encode(), salt)
     return hashed_password.decode()
 
@@ -35,15 +34,14 @@ def password_validation(password: str, hashed_password: str):
 
 def jwt_encode(email: str) -> str:
     payload = {
-        'exp': datetime.datetime.now() + datetime.timedelta(days=14),
+        'exp': datetime.datetime.now() + datetime.timedelta(days=config.JWT_EXPIRE_TIME),
         'iat': datetime.datetime.now(),
         'iss': 'e-blogger',
         'data': {
             'email': email
         }
     }
-    dotenv.load_dotenv() 
-    token = jwt.encode(payload, key=os.environ.get('JWT_SECRET_KEY', 'DEFAULT_SECRET_KEY'), algorithm='HS256')
+    token = jwt.encode(payload, key=config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
     return token 
 
 

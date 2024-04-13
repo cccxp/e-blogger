@@ -4,18 +4,26 @@ Group project for SPM WOX7016
 
 ## Basic Setup
 
-Development Environment: 
+**Development Environment:**
 - Windows 11 (should work on Linux or MacOS also)
 - Python 3.11.5 
 
-Setup Virtual Environment: 
+**Setup Virtual Environment:**
 ```bash
 python -m venv .  # create virtual environment
 bin/activate  # activate venv 
 pip install -r requirements.txt  # install all requirements 
 ```
 
-Start server: 
+**Configuration:**
+
+See comments in `config.py`.
+
+**Start server:**
 ```bash
 uvicorn main:app --reload
 ```
+
+**API Document:**
+
+Open `http://host:port/redoc` after starting server. 

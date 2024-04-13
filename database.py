@@ -5,14 +5,13 @@ from fastapi import Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+import config
 
-SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./database/e_blogger.db"
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
 logger = logging.getLogger(__name__)
 
 async_engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL,
+    config.SQLALCHEMY_DATABASE_URL,
     pool_pre_ping=True,
 )
 AsyncSessionLocal = async_sessionmaker(
