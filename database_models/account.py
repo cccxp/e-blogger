@@ -11,12 +11,25 @@ class User(Base):
     email: Mapped[str] = mapped_column(
         "email", nullable=False, unique=True, primary_key=True
     )
-    username: Mapped[str] = mapped_column(
-        "username", nullable=False
-    )
     password: Mapped[str] = mapped_column(
-        "password", nullable=False
+        "password", nullable=False,
     )
+    username: Mapped[str] = mapped_column(
+        "username", nullable=True,
+    )
+    first_name: Mapped[str] = mapped_column(
+        "first_name", nullable=True,
+    )
+    last_name: Mapped[str] = mapped_column(
+        "last_name", nullable=True,
+    )
+    profile_picture: Mapped[str] = mapped_column(
+        "profile_picture", nullable=True,
+    )
+    bio: Mapped[str] = mapped_column(
+        "bio", nullable=True,
+    )
+    
 
     @classmethod
     async def get_by_email(cls, session: AsyncSession, email: str):
@@ -24,8 +37,8 @@ class User(Base):
         return await session.scalar(stmt)
 
     @classmethod
-    async def add(cls, session: AsyncSession, email: str, username: str, password: str):
-        user = User(email=email, username=username, password=password)
+    async def add(cls, session: AsyncSession, email: str, first_name: str, last_name: str, password: str):
+        user = User(email=email, first_name=first_name, last_name=last_name, password=password)
         session.add(user)
         await session.flush()
 

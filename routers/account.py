@@ -14,10 +14,10 @@ class UseCaseBase:
 
 
 class AddUser(UseCaseBase):
-    async def execute(self, email: str, username: str, hashed_password: str) -> tuple[bool, str]:
+    async def execute(self, email: str, first_name: str, last_name: str, hashed_password: str) -> tuple[bool, str]:
         async with self.async_session.begin() as session:
             try:
-                user = await User.add(session, email, username, hashed_password)
+                user = await User.add(session, email, first_name, last_name, hashed_password)
                 return True, 'register success.'
             except sqlalchemy.exc.IntegrityError:
                 return False, 'email or username already exist.'
@@ -42,9 +42,7 @@ async def register(r: RegisterRequest, use_case: AddUser = Depends(AddUser)):
     strength_check, reason = security.password_strength_check(r.password)
     if not strength_check:
         return RegisterResponse(success=False, message=f'Password strength check faild, reason: {reason}')
-    # TODO: captcha check
-
-    success, reason = await use_case.execute(r.email, r.username, security.password_encryption(r.password))
+    success, reason = await use_case.execute(r.email, r.first_name, r.last_name, security.password_encryption(r.password))
     return RegisterResponse(success=success, message=reason)
 
 

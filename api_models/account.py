@@ -3,9 +3,10 @@ from .base import BaseRequestModel, BaseResponseModel
 
 class RegisterRequest(BaseRequestModel):
     email: str = Field(description="user's email, also used as primary key. ", max_length=128)
-    username: str = Field(description="username.", max_length=32)
+    first_name: str = Field(description="user's first name. ", max_length=64)
+    last_name: str = Field(description="user's last name. ", max_length=64)
+    # username: str = Field(description="username.", max_length=32)
     password: str = Field(description="user's password. should fit some requirements.", min_length=8, max_length=64)
-    captcha: str = Field(description='captcha', min_length=5, max_length=5)
 
 
 class RegisterResponse(BaseResponseModel):
@@ -15,7 +16,6 @@ class RegisterResponse(BaseResponseModel):
 class LoginRequest(BaseRequestModel):
     email: str = Field(description="user's email, also used as primary key. ", max_length=128)
     password: str = Field(description="user's password. should fit some requirements.", min_length=8, max_length=64)
-    captcha: str = Field(description='captcha', min_length=5, max_length=5)
 
 
 class LoginResponse(BaseResponseModel):
