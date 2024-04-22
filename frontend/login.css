@@ -1,0 +1,158 @@
+body, header, h2, form, input, label, button {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+}
+
+header {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%; 
+    height: 60px;
+    /* background-color: white;  */
+    padding: 0; 
+    margin: 0; 
+    position: fixed;
+    top: 0;
+    left: 0; 
+}
+
+.circle {
+    width: 40px; 
+    height: 40px; 
+    background-color: rgba(128, 128, 128, 0.658); 
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+hr {
+    width: 100%; 
+    border: none;
+    border-top: 1px solid #91919198;
+    margin: 0;
+    position: absolute;
+    top: 60px; 
+    right: 1px;
+}
+
+.login-container {
+    width: 100%; 
+    max-width: 400px; 
+    padding: 20px;
+}
+
+h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.form-group, .form-group2 {
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%; 
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f000; 
+}
+
+
+.create-account-button {
+    width: 108%; 
+    padding: 15px;
+    background-color: #aaaaaa;
+    border: none;
+    color: white;
+    font-size: large;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+    accent-color: black;
+}
+
+.create-account-button:hover {
+    background-color: #aaaaaa;
+}
+
+.bold-underline {
+    font-weight: bold;
+    text-decoration: underline; 
+}
+input[type="checkbox"] {
+    margin: 0; 
+    padding: 0; 
+    display: inline-block; 
+    vertical-align: middle; 
+}
+label[for="terms"] {
+    display: inline-flex; 
+    align-items: center; 
+    white-space: nowrap; 
+    margin: 0; 
+    padding: 0; 
+    color: #0c0c0c;
+    font-weight: 400;
+}
+label[for="remember-me"] {
+    display: inline-flex; 
+    align-items: center; 
+    white-space: nowrap; 
+    margin: 0; 
+    padding: 0; 
+    color: #0c0c0c;
+    font-weight: 400;
+}
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: small;
+    color: #0c0c0ccb;
+}
+.create-account-button {
+    text-align: center; 
+    display: block; 
+    margin: 0 auto; 
+}
+
+
+.forgot-password, .signup-link {
+    text-align: center; 
+    display: block; 
+}
+
+
+.forgot-password a, .signup-link a {
+    text-decoration: none; 
+    color: black; 
+}
+
+.back-arrow {
+    font-size: 24px; 
+    color: rgba(128, 128, 128, 0.658); 
+    position: fixed; 
+    top: 10px; 
+    left: 10px; 
+    text-decoration: none; 
+    cursor: pointer; 
+}
+
+

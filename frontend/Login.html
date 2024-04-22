@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<!-- Circle and Arrow -->
+<body>
+    <header>
+        <a href="#" class="back-arrow">←</a>
+        <div class="circle"></div>
+    </header>
+    <hr>
+<!-- Login part -->
+    <div class="login-container">
+        <h2>Log in</h2>
+        <form>
+            <!-- Email or username -->
+            <div class="form-group">
+                <label for="email">Email address or Username</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <!-- Remember me checkbox -->
+            <div class="form-group2">
+                <label for="remember-me">
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    &nbsp;Remember me
+                </label>
+            </div>
+            <br>
+            <!-- Terms of use and Privacy policy -->
+            <div class="form-group2">
+                <label for="terms">
+                    &nbsp;By continuing, you agree to our&nbsp; <span class="bold-underline">Terms of use</span>&nbsp;and&nbsp;<span class="bold-underline">Privacy policy</span>.
+                </label>
+            </div>
+
+            <!-- Login button -->
+            <button type="submit" class="create-account-button">Log in</button>
+<br>
+            <!-- Forgot your password link -->
+            <div class="forgot-password">
+                <a href="#" class="bold-underline">Forgot your password?</a>
+            </div>
+            <br>
+            <!-- Don't have an account? Sign up -->
+            <div class="signup-link">
+                Don't have an account? <a href="#" class="bold-underline">Sign up</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
