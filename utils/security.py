@@ -1,8 +1,11 @@
-
 import re 
 import bcrypt
 import jwt 
 import datetime
+
+from typing import Annotated
+
+from fastapi import HTTPException, Header
 
 import config
 
@@ -45,7 +48,11 @@ def jwt_encode(email: str) -> str:
     return token 
 
 
-def get_current_user(token: str):
-    # TODO
-    pass 
-
+async def get_current_user(Authorization: Annotated[str, Header()]):
+    token = Authorization.lstrip('Bearer ')
+    try:
+        payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM], issuer='e-blogger')
+        # pyjwt will auto check issuer and exp.
+        return payload['data']['email']
+    except (jwt.PyJWTError, ValueError) as e:
+        raise HTTPException(status_code=400, detail=f'Token Invalid: {str(e)}')

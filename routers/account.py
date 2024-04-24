@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from typing import Annotated
+from fastapi import APIRouter, Depends, HTTPException, Header
 import sqlalchemy
 from api_models.account import *
 from database_models.account import User
@@ -35,6 +36,15 @@ class LoginCheck(UseCaseBase):
             return True, 'Login success.'
 
 
+class GetUserProfile(UseCaseBase):
+    async def execute(self, current_user: str):
+        async with self.async_session.begin() as session:
+            user = await User.get_by_email(session, current_user)
+            if not user:
+                raise HTTPException(400, detail='User not valid.')
+            return user.email, user.first_name, user.last_name, user.profile_picture, user.bio
+
+
 @router.post('/register', response_model=RegisterResponse)
 async def register(r: RegisterRequest, use_case: AddUser = Depends(AddUser)):
     if not security.email_check(r.email):
@@ -53,3 +63,10 @@ async def login(r: LoginRequest, use_case: LoginCheck = Depends(LoginCheck)):
     if success:
         token = security.jwt_encode(r.email)
     return LoginResponse(success=success, message=reason, token=token)
+
+
+@router.get("/profile/me", response_model=GetUserProfileResponse)
+async def get_profile(current_user: str = Depends(security.get_current_user), use_case: GetUserProfile = Depends(GetUserProfile)):
+    email, first_name, last_name, profile_picture, bio = await use_case.execute(current_user)
+    return GetUserProfileResponse(success=True, message='', email=email, first_name=first_name, last_name=last_name, bio=bio, profile_picture=profile_picture)
+

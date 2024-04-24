@@ -22,3 +22,14 @@ class LoginResponse(BaseResponseModel):
     token: str = Field('', description='JSON Web Tokens. Add this token into request headers like this: "Authorization: Bearer <token>" ref: https://jwt.io/introduction .')
 
 
+class GetUserProfileRequest(BaseRequestModel):
+    pass
+
+
+class GetUserProfileResponse(BaseResponseModel):
+    email: str = Field(description="user's email, also used as primary key. ", max_length=128)
+    first_name: str = Field(description="user's first name. ", max_length=64)
+    last_name: str = Field(description="user's last name. ", max_length=64)
+    bio: str = Field(description="user's bio.")
+    profile_picture: str = Field(description="user's profile picture link.")
+
