@@ -1,0 +1,139 @@
+body, header, h2, form, input, label, button {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.login-button {
+    background-color: #ffffff;
+    border: 1px solid #000;
+    padding: 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    width: 110px; 
+    font-weight: 600;
+}
+
+.logo-container {
+    margin-top: 3%;
+    width: 40%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registration-container {
+    margin-top: 3%;
+    width: 50%; 
+    padding: 20px;
+}
+
+h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    /* display: flex; */
+}
+.form-group2 {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+input[type="checkbox"] {
+    margin: 0; 
+    padding: 0; 
+    display: inline-block; 
+    vertical-align: middle; 
+}
+label[for="terms"] {
+    display: inline-flex; 
+    align-items: center; 
+    white-space: nowrap; 
+    margin: 0; 
+    padding: 0; 
+    color: #0c0c0c;
+    font-weight: 400;
+}
+
+.bold-underline {
+    font-weight: bold;
+    text-decoration: underline; 
+}
+
+
+hr {
+    width: 100%; 
+    border: none;
+    border-top: 1px solid #91919198;
+    margin: 0;
+    position: absolute;
+    top: 60px; 
+    right: 1px;
+}
+
+.test {
+    margin-left: 5px;
+    display: flex; 
+    align-items: center; 
+}
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: small;
+    color: #0c0c0ccb;
+}
+
+input {
+    width: 77%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0);
+    
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+    color: #0c0c0c;
+    accent-color: black;
+}
+
+.create-account-button {
+    width: 81%;
+    font-family: 'Montserrat', sans-serif;
+    padding: 15px;
+    background-color: #aaaaaa;
+    border: none;
+    color: white;
+    font-size: large;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight:500;
+    margin-top: 3%;
+}
+
+.create-account-button:hover {
+    background-color: #aaaaaa;
+}
