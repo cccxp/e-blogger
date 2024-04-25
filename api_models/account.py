@@ -33,3 +33,19 @@ class GetUserProfileResponse(BaseResponseModel):
     last_name: str = Field(description="user's last name. ", max_length=64)
     bio: str | None = Field('', description="user's bio.")
     profile_picture: str | None = Field('', description="user's profile picture link.")
+
+
+class DeleteUserResponse(BaseResponseModel):
+    pass 
+
+
+class UpdateProfileRequest(BaseRequestModel):
+    first_name: str = Field(description="user's first name. ", max_length=64)
+    last_name: str = Field(description="user's last name. ", max_length=64)
+    password: str = Field(description="user's password. leave blank if don't want to change.", max_length=64)
+    bio: str = Field('', description="user's bio.")
+    profile_picture: str = Field('', description="user's profile picture link.")    
+
+
+class UpdateProfileResponse(BaseResponseModel):
+    pass 

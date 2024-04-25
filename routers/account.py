@@ -28,7 +28,6 @@ class LoginCheck(UseCaseBase):
     async def execute(self, email: str, password: str) -> tuple[bool, str]:
         async with self.async_session.begin() as session:
             user = await User.get_by_email(session, email)
-            print(user, email, password)
             if not user:
                 return False, 'User not found. '
             if not security.password_validation(password, user.password):
@@ -43,6 +42,24 @@ class GetUserProfile(UseCaseBase):
             if not user:
                 raise HTTPException(400, detail='User not valid.')
             return user.email, user.first_name, user.last_name, user.profile_picture, user.bio
+
+
+class UpdateUserProfile(UseCaseBase):
+    async def execute(self, current_user: str, password: str, first_name: str, last_name: str, profile_picture: str, bio: str):
+        async with self.async_session.begin() as session:
+            if password:
+                password = security.password_encryption(password)
+            user = await User.update(session, current_user, first_name, last_name, password, bio, profile_picture)
+            return user
+
+
+class DeleteUser(UseCaseBase):
+    async def execute(self, current_user: str):
+        async with self.async_session.begin() as session:
+            user = await User.get_by_email(session, current_user)
+            if not user:
+                raise HTTPException(400, detail='User not valid.')
+            await User.delete(session, user)
 
 
 @router.post('/register', response_model=RegisterResponse)
@@ -70,3 +87,14 @@ async def get_profile(current_user: str = Depends(security.get_current_user), us
     email, first_name, last_name, profile_picture, bio = await use_case.execute(current_user)
     return GetUserProfileResponse(success=True, message='', email=email, first_name=first_name, last_name=last_name, bio=bio, profile_picture=profile_picture)
 
+
+@router.delete("/profile/me", response_model=DeleteUserResponse)
+async def delete_account(current_user: str = Depends(security.get_current_user), use_case: DeleteUser = Depends(DeleteUser)):
+    await use_case.execute(current_user)
+    return DeleteUserResponse(success=True, message='delete successful.')
+
+
+@router.put("/profile/me", response_model=UpdateProfileResponse)
+async def update_profile(r: UpdateProfileRequest, current_user: str = Depends(security.get_current_user), use_case: UpdateUserProfile = Depends(UpdateUserProfile)):
+    await use_case.execute(current_user, r.password, r.first_name, r.last_name, r.profile_picture, r.bio)
+    return UpdateProfileResponse(success=True, message='update successful.')

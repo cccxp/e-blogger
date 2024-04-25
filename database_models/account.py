@@ -46,5 +46,30 @@ class User(Base):
         if not new:
             raise RuntimeError('user add failed')
         return new 
+
+    @classmethod
+    async def update_password(cls, session: AsyncSession, user, password: str):
+        user.password = password
+        await session.commit()
+        await session.flush()
+        return user 
+
+
+    @classmethod
+    async def update(cls, session: AsyncSession, email: str, first_name: str, last_name: str, password: str, bio: str, profile_picture: str):
+        user = await cls.get_by_email(session, email)
+        if password:
+            cls.update_password(session, user, password)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.bio = bio 
+        user.profile_picture = profile_picture
+        await session.commit()
+        await session.flush()
+        return user 
     
+    @classmethod
+    async def delete(cls, session: AsyncSession, user):
+        await session.delete(user)
+        return True
 
