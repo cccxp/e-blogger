@@ -1,6 +1,7 @@
 from pydantic import Field
 from .base import BaseRequestModel, BaseResponseModel
 
+
 class RegisterRequest(BaseRequestModel):
     email: str = Field(description="user's email, also used as primary key. ", max_length=128)
     first_name: str = Field(description="user's first name. ", max_length=64)
@@ -30,6 +31,5 @@ class GetUserProfileResponse(BaseResponseModel):
     email: str = Field(description="user's email, also used as primary key. ", max_length=128)
     first_name: str = Field(description="user's first name. ", max_length=64)
     last_name: str = Field(description="user's last name. ", max_length=64)
-    bio: str = Field(description="user's bio.")
-    profile_picture: str = Field(description="user's profile picture link.")
-
+    bio: str | None = Field('', description="user's bio.")
+    profile_picture: str | None = Field('', description="user's profile picture link.")

@@ -38,7 +38,6 @@ def password_validation(password: str, hashed_password: str):
 def jwt_encode(email: str) -> str:
     payload = {
         'exp': datetime.datetime.now() + datetime.timedelta(days=config.JWT_EXPIRE_TIME),
-        'iat': datetime.datetime.now(),
         'iss': 'e-blogger',
         'data': {
             'email': email
@@ -49,7 +48,7 @@ def jwt_encode(email: str) -> str:
 
 
 async def get_current_user(Authorization: Annotated[str, Header()]):
-    token = Authorization.lstrip('Bearer ')
+    token = Authorization.replace('Bearer ', '', 1)
     try:
         payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM], issuer='e-blogger')
         # pyjwt will auto check issuer and exp.
