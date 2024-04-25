@@ -28,11 +28,11 @@ function checkLogin() {
                 // clear token data
                 localStorage.clear()
                 alert("please login first. ")
-                window.location.href = "/static/Login.html";
+                window.location.href = "Login.html";
             }
         })
     } else {
         alert("please login first. ")
-        window.location.href = "/static/Login.html";
+        window.location.href = "Login.html";
     }
 }
