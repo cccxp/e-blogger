@@ -5,19 +5,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <title>Login Page</title>
     <link rel="stylesheet" href="css/Login.css">
 </head>
 
 <!-- Circle and Arrow -->
+
 <body>
     <header>
         <a href="#" class="back-arrow">←</a>
         <div class="circle"></div>
     </header>
     <hr>
-<!-- Login part -->
+    <!-- Login part -->
     <div class="login-container">
         <h2>Log in</h2>
         <form>
@@ -44,13 +47,14 @@
             <!-- Terms of use and Privacy policy -->
             <div class="form-group2">
                 <label for="terms">
-                    &nbsp;By continuing, you agree to our&nbsp; <span class="bold-underline">Terms of use</span>&nbsp;and&nbsp;<span class="bold-underline">Privacy policy</span>.
+                    &nbsp;By continuing, you agree to our&nbsp; <span class="bold-underline">Terms of
+                        use</span>&nbsp;and&nbsp;<span class="bold-underline">Privacy policy</span>.
                 </label>
             </div>
 
             <!-- Login button -->
-            <button id="login-button" class="create-account-button">Log in</button>
-<br>
+            <button id="login-button" type="button" class="create-account-button">Log in</button>
+            <br>
             <!-- Forgot your password link -->
             <div class="forgot-password">
                 <a href="#" class="bold-underline">Forgot your password?</a>
@@ -62,6 +66,37 @@
             </div>
         </form>
     </div>
+    <script src="scripts/axios.min.js"></script>
+    <script src="scripts/api.js"></script>
+    <script>
+
+        function login(email, password) {
+            api.post("/account/login", {
+                email: email,
+                password: password,
+            }).then(function (resp) {
+                // resp.data is json data get from backend.
+                console.log(resp.data)
+
+                if (resp.data.success) {
+                    // if success, save token to local storage, then redirect
+                    localStorage.setItem("token", resp.data.token)
+                    window.location.href = "/static/index.html";
+                } else {
+                    // show error message
+                    alert(resp.data.message)
+                }
+            })
+        }
+
+        // add click event on login button
+        document.querySelector("#login-button").addEventListener("click",
+            function (e) {
+                let email = document.querySelector("#email").value  // get the value of input box
+                let password = document.querySelector("#password").value
+                login(email, password)  // do login 
+            })
+    </script>
 </body>
 
 </html>

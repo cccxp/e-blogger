@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/Registration.css">
     <title>Registration Page</title>
 </head>
@@ -13,12 +15,12 @@
 <body>
     <!-- Login -->
     <div class="container">
-    <header>
-        <button class="login-button">Log in</button> 
-    </header>
-    <hr>
+        <header>
+            <button class="login-button">Log in</button>
+        </header>
+        <hr>
     </div>
-<!-- LOGO  -->
+    <!-- LOGO  -->
     <div class="logo-container">
         <img src="https://via.placeholder.com/300" alt="Logo">
     </div>
@@ -48,16 +50,50 @@
             </div>
             <!-- Terms and Privacy Policy -->
             <div class="container">
-            <label for="terms">
-                <input type="checkbox" id="terms">By creating an account, I agree to our&nbsp;
-                <span class="bold-underline">Terms of use</span>&nbsp;and&nbsp;
-                <span class="bold-underline">Privacy policy</span>
-            </label>
-        </div>
-        <!-- Create Account Button -->
-            <button id="register-button" class="create-account-button">Create an account</button>
+                <label for="terms">
+                    <input type="checkbox" id="terms">By creating an account, I agree to our&nbsp;
+                    <span class="bold-underline">Terms of use</span>&nbsp;and&nbsp;
+                    <span class="bold-underline">Privacy policy</span>
+                </label>
+            </div>
+            <!-- Create Account Button -->
+            <button id="register-button" type="button" class="create-account-button">Create an account</button>
         </form>
     </div>
+    <script src="scripts/axios.min.js"></script>
+    <script src="scripts/api.js"></script>
+    <script>
+
+        function register(email, first_name, last_name, password) {
+            api.post("/account/register", {
+                email: email,
+                first_name: first_name,
+                last_name: last_name,
+                password: password,
+            }).then(function (resp) {
+                // resp.data is json data get from backend.
+                console.log(resp.data)
+
+                if (resp.data.success) {
+                    // if success, redirect to login page / or maybe Edit Profile page? 
+                    alert(resp.data.message)
+                    window.location.href = "/static/Login.html";
+                } else {
+                    // show error message
+                    alert(resp.data.message)
+                }
+            })
+        }
+
+        document.querySelector("#register-button").addEventListener("click",
+            function (e) {
+                let email = document.querySelector("#email").value  // get the value of input box
+                let password = document.querySelector("#password").value
+                let first_name = document.querySelector("#first-name").value
+                let last_name = document.querySelector("#last-name").value
+                register(email, first_name, last_name, password)
+            })
+    </script>
 </body>
 
 </html>
