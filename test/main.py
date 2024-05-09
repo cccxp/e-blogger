@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class TestDeleteUser(unittest.TestCase):
+class Test_0_RecreateUser(unittest.TestCase):
     base_url = "http://localhost:8000/api/v1"
 
     def test_0_delete_user(self):
@@ -36,7 +36,7 @@ class TestDeleteUser(unittest.TestCase):
         self.assertTrue(resp.json().get('success'))
 
 
-class TestGetProfile(unittest.TestCase):
+class Test_1_GetProfile(unittest.TestCase):
     base_url = "http://localhost:8000/api/v1"
 
     def setUp(self):
@@ -70,6 +70,40 @@ class TestGetProfile(unittest.TestCase):
             'Authorization': f'Bearer {self.token}'
         })
         self.assertEqual(resp.status_code, 200)
+
+
+class Test_2_CURDBlogs(unittest.TestCase):
+    base_url = "http://localhost:8000/api/v1"
+
+    def setUp(self):
+        """ Login """
+        resp = requests.post(f'{self.base_url}/account/login', json={
+            'email': 'test@gmail.com',
+            'password': '12345678QWERTY',
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json().get('success'))
+        self.token = resp.json().get('token')
+
+    def test_1_add_blog(self):
+        resp = requests.post(f'{self.base_url}/blog/add', json={
+            'title': 'Test Blog',
+            'content': 'This is a test blog.',
+        }, headers={
+            'Authorization': f'Bearer {self.token}'
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json().get('success'))
+        print(resp.json())
+
+    def test_2_get_blog_by_id(self):
+        # FIXME: Blog id should be dynamic
+        resp = requests.get(f'{self.base_url}/blog/4', headers={
+            'Authorization': f'Bearer {self.token}'
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json().get('success'))
+        print(resp.json())
 
 
 if __name__ == '__main__':

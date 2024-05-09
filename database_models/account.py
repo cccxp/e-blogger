@@ -29,6 +29,7 @@ class User(Base):
     bio: Mapped[str] = mapped_column(
         "bio", nullable=True,
     )
+    blogs: Mapped[list] = relationship("Blog", back_populates="author", cascade="all, delete-orphan")
     
 
     @classmethod
