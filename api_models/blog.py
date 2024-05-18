@@ -43,3 +43,7 @@ class UpdateBlogResponse(BaseResponseModel):
 
 class DeleteBlogResponse(BaseResponseModel):
     pass 
+
+
+class ListBlogResponse(BaseResponseModel):
+    blogs: list[BlogModel] = Field(None, description="List of blogs")

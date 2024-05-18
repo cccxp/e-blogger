@@ -1,5 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Header
+from sqlalchemy.exc import NoResultFound
+
 from api_models.blog import *
 from database_models.blog import Blog
 
@@ -7,6 +9,7 @@ from utils.security import get_current_user
 from database import AsyncSession
 
 router = APIRouter(prefix='/blog')
+
 
 class UseCaseBase:
     def __init__(self, session: AsyncSession) -> None:
@@ -27,7 +30,8 @@ class GetBlogUseCase(UseCaseBase):
             if not blog:
                 raise HTTPException(status_code=404, detail="Blog not found")
             if blog.author_email != email:
-                raise HTTPException(status_code=403, detail="You are not authorized to access this blog")
+                raise HTTPException(
+                    status_code=403, detail="You are not authorized to access this blog")
             return blog
 
 
@@ -38,7 +42,8 @@ class UpdateBlogUseCase(UseCaseBase):
             if not blog:
                 raise HTTPException(status_code=404, detail="Blog not found")
             if blog.author_email != user_email:
-                raise HTTPException(status_code=403, detail="You are not authorized to update this blog")
+                raise HTTPException(
+                    status_code=403, detail="You are not authorized to update this blog")
             await blog.update(title, content)
             return blog
 
@@ -50,13 +55,37 @@ class DeleteBlogUseCase(UseCaseBase):
             if not blog:
                 raise HTTPException(status_code=404, detail="Blog not found")
             if blog.author_email != user_email:
-                raise HTTPException(status_code=403, detail="You are not authorized to delete this blog")
+                raise HTTPException(
+                    status_code=403, detail="You are not authorized to delete this blog")
             await blog.delete_by_id(session, blog_id)
+
+
+class ListBlogUseCase(UseCaseBase):
+    async def execute(self, user_email: str) -> list[Blog]:
+        async with self.async_session() as session:
+            blogs = await Blog.get_all_by_author(session, user_email)
+            return blogs
+
+
+@router.get('/all', response_model=ListBlogResponse)
+async def get_all_blogs(user_email: str = Depends(get_current_user), use_case: ListBlogUseCase = Depends(ListBlogUseCase)):
+    blogs = await use_case.execute(user_email)
+    return ListBlogResponse(success=True, message="Blogs found successfully", blogs=[BlogModel.model_validate({
+        "id": blog.id,
+        "title": blog.title,
+        "content": blog.content,
+        "created_at": blog.created_at,
+        "updated_at": blog.updated_at,
+        "author_email": blog.author_email,
+    }) for blog in blogs])
 
 
 @router.get('/{blog_id}', response_model=GetBlogResponse)
 async def get_blog(blog_id: int, user_email: str = Depends(get_current_user), use_case: GetBlogUseCase = Depends(GetBlogUseCase)):
-    blog = await use_case.execute(blog_id, user_email)
+    try:
+        blog = await use_case.execute(blog_id, user_email)
+    except NoResultFound:
+        return GetBlogResponse(success=False, message="Blog not found")
     return GetBlogResponse(success=True, message="Blog found successfully", blog=BlogModel.model_validate({
         "id": blog.id,
         "title": blog.title,
@@ -83,4 +112,3 @@ async def update_blog(blog_id: int, r: UpdateBlogRequest, user_email: str = Depe
 async def delete_blog(blog_id: int, user_email: str = Depends(get_current_user), use_case: DeleteBlogUseCase = Depends(DeleteBlogUseCase)):
     await use_case.execute(blog_id, user_email)
     return DeleteBlogResponse(success=True, message="Blog deleted successfully")
-

@@ -96,9 +96,17 @@ class Test_2_CURDBlogs(unittest.TestCase):
         self.assertTrue(resp.json().get('success'))
         print(resp.json())
 
-    def test_2_get_blog_by_id(self):
-        # FIXME: Blog id should be dynamic
-        resp = requests.get(f'{self.base_url}/blog/4', headers={
+    def test_2_get_blogs(self):
+        # get all blogs
+        resp = requests.get(f'{self.base_url}/blog/all', headers={
+            'Authorization': f'Bearer {self.token}'
+        })
+        self.assertEqual(resp.status_code, 200)
+
+        # get first blog id
+        blog_id = resp.json().get('blogs')[0].get('id')
+
+        resp = requests.get(f'{self.base_url}/blog/{blog_id}', headers={
             'Authorization': f'Bearer {self.token}'
         })
         self.assertEqual(resp.status_code, 200)
