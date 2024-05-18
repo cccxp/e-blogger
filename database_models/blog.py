@@ -20,7 +20,7 @@ class Blog(Base):
     async def get_by_id(cls, session: AsyncSession, id: int) -> "Blog":
         return (
             await session.execute(select(cls).options(joinedload(cls.author)).filter_by(id=id))
-        ).scalar_one()
+        ).scalar_one_or_none()
 
     @classmethod
     async def add(cls, session: AsyncSession, title: str, content: str, author_email: str) -> "Blog":
