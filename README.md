@@ -11,7 +11,8 @@ Group project for SPM WOX7016
 **Setup Virtual Environment:**
 ```bash
 python -m venv .  # create virtual environment
-bin/activate  # activate venv 
+source bin/activate  # activate venv (on Linux / MacOS)
+Scripts/activate  # activate venv (on Windows)
 pip install -r requirements.txt  # install all requirements 
 ```
 
