@@ -1,5 +1,5 @@
 # E-Blogger
-Group project for SPM WOX7016
+Group project for SPM WOC7016
 
 
 ## Basic Setup
