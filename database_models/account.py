@@ -30,7 +30,7 @@ class User(Base):
         "bio", nullable=True,
     )
     blogs: Mapped[list] = relationship("Blog", back_populates="author", cascade="all, delete-orphan")
-    
+
 
     @classmethod
     async def get_by_email(cls, session: AsyncSession, email: str):
@@ -54,7 +54,6 @@ class User(Base):
         await session.commit()
         await session.flush()
         return user 
-
 
     @classmethod
     async def update(cls, session: AsyncSession, email: str, first_name: str, last_name: str, password: str, bio: str, profile_picture: str):

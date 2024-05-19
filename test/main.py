@@ -94,7 +94,17 @@ class Test_2_CURDBlogs(unittest.TestCase):
         })
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(resp.json().get('success'))
-        print(resp.json())
+        # print(resp.json())
+
+        resp = requests.post(f'{self.base_url}/blog/add', json={
+            'title': 'Journey to Mars',
+            'content': 'A journey to Mars is a long and exciting adventure.',
+        }, headers={
+            'Authorization': f'Bearer {self.token}'
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json().get('success'))
+        # print(resp.json())
 
     def test_2_get_blogs(self):
         # get all blogs
@@ -112,6 +122,15 @@ class Test_2_CURDBlogs(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(resp.json().get('success'))
         print(resp.json())
+
+    def test_3_search_blogs(self):
+        resp = requests.post(f'{self.base_url}/blog/search', headers={
+            'Authorization': f'Bearer {self.token}'
+        }, json={
+            'query': 'test'
+        })
+        print(resp.json())
+        self.assertEqual(resp.status_code, 200)
 
 
 if __name__ == '__main__':

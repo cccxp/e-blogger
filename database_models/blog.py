@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped, joinedload, mapped_column, relationship
 from .account import User
 import datetime
 
+
 class Blog(Base):
     __tablename__ = "blogs"
 
@@ -25,7 +26,8 @@ class Blog(Base):
     @classmethod
     async def add(cls, session: AsyncSession, title: str, content: str, author_email: str) -> "Blog":
         current_time = datetime.datetime.now()
-        blog = Blog(title=title, content=content, author_email=author_email, created_at=current_time, updated_at=current_time)
+        blog = Blog(title=title, content=content, author_email=author_email,
+                    created_at=current_time, updated_at=current_time)
         session.add(blog)
         await session.commit()
         await session.refresh(blog)
@@ -55,3 +57,26 @@ class Blog(Base):
             await session.execute(select(cls).options(joinedload(cls.author)).filter_by(author_email=author_email))
         ).scalars().all()
 
+    @classmethod
+    async def search_by_keywords(cls, session: AsyncSession, keywords: str, email: str) -> list["Blog"]:
+        keywords = keywords.strip().lower()
+        keywords = keywords.split()
+        blogs = (
+            await session.execute(
+                select(cls).options(
+                    joinedload(cls.author)
+                ).filter(
+                    cls.author_email == email,
+                    cls.title.ilike(f'%{keywords[0]}%'),
+                    cls.content.ilike(f'%{keywords[0]}%')
+                ))
+        ).scalars().all()
+        if len(keywords) > 1:
+            blogs = [
+                blog for blog in blogs
+                if all((
+                    keyword in blog.title.lower()
+                    or keyword in blog.content.lower()
+                    for keyword in keywords
+                ))]
+        return blogs

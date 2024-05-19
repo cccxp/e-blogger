@@ -2,7 +2,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from api_models.blog import *
+from api_models.search import *
 from database_usecase.blog import *
+from database_usecase.search import *
+
 
 from utils.security import get_current_user
 
@@ -13,6 +16,19 @@ router = APIRouter(prefix='/blog')
 async def get_all_blogs(user_email: str = Depends(get_current_user), use_case: ListBlogUseCase = Depends(ListBlogUseCase)):
     blogs = await use_case.execute(user_email)
     return ListBlogResponse(success=True, message="Blogs found successfully", blogs=[BlogModel.model_validate({
+        "id": blog.id,
+        "title": blog.title,
+        "content": blog.content,
+        "created_at": blog.created_at,
+        "updated_at": blog.updated_at,
+        "author_email": blog.author_email,
+    }) for blog in blogs])
+
+
+@router.post('/search', response_model=SearchResponse)
+async def search_blogs(r: SearchRequest, user_email: str = Depends(get_current_user), use_case: SearchBlogUseCase = Depends(SearchBlogUseCase)):
+    blogs = await use_case.execute(r.query, user_email)
+    return SearchResponse(success=True, message="Search successfully", blogs=[BlogModel.model_validate({
         "id": blog.id,
         "title": blog.title,
         "content": blog.content,
