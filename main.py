@@ -16,7 +16,12 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title='E-Blogger',
+    description='A simple blogging platform built with FastAPI.',
+    version='0.1.0',
+    lifespan=lifespan
+)
 
 api = APIRouter(prefix='/api/v1')
 api.include_router(account.router)
