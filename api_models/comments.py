@@ -10,14 +10,6 @@ class Comment(BaseModel):
     user_email: str = Field(None, description="User email")
 
 
-class GetCommentsRequest(BaseRequestModel):
-    blog_id: int = Field(None, description="Blog ID")
-
-
-class GetCommentsResponse(BaseResponseModel):
-    comments: list[Comment] = Field(None, description="List of comments")
-
-
 class CreateCommentRequest(BaseRequestModel):
     blog_id: int = Field(None, description="Blog ID")
     content: str = Field(None, description="Comment content")

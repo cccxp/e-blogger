@@ -22,6 +22,7 @@ async def get_all_blogs(user_email: str = Depends(get_current_user), use_case: L
         "created_at": blog.created_at,
         "updated_at": blog.updated_at,
         "author_email": blog.author_email,
+        "comments": [],  # FIXME: fake data
     }) for blog in blogs])
 
 
@@ -35,6 +36,7 @@ async def search_blogs(r: SearchRequest, user_email: str = Depends(get_current_u
         "created_at": blog.created_at,
         "updated_at": blog.updated_at,
         "author_email": blog.author_email,
+        "comments": [],  # FIXME: fake data
     }) for blog in blogs])
 
 
@@ -48,6 +50,7 @@ async def get_blog(blog_id: int, user_email: str = Depends(get_current_user), us
         "created_at": blog.created_at,
         "updated_at": blog.updated_at,
         "author_email": blog.author_email,
+        "comments": [],  # FIXME: fake data
     }))
 
 

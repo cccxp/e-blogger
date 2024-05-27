@@ -1,6 +1,6 @@
 from pydantic import Field
 from .base import BaseModel, BaseRequestModel, BaseResponseModel
-
+from .comments import Comment
 
 class BlogModel(BaseModel):
     id: int = Field(None, description="Blog ID")
@@ -9,6 +9,7 @@ class BlogModel(BaseModel):
     created_at: str = Field(None, description="Blog Created At")
     updated_at: str = Field(None, description="Blog Updated At")
     author_email: str = Field(None, description="Blog Author Email")
+    comments: list[Comment] = Field(None, description="List of comments")
 
 
 class GetUserBlogsRequest(BaseRequestModel):

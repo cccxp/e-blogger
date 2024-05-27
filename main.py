@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from routers import account, blog 
+from routers import account, blog, comments
 from contextlib import asynccontextmanager
 from database import async_engine
 from database_models.base import Base
@@ -26,6 +26,7 @@ app = FastAPI(
 api = APIRouter(prefix='/api/v1')
 api.include_router(account.router)
 api.include_router(blog.router)
+api.include_router(comments.router)
 
 allow_origins = [
     "*",
