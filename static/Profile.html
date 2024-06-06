@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="./css/Profile.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">E-Blogger</div>
+        <div class="nav">
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+        </div>
+    </div>
+
+    <div class="banner">
+        <img src="images/sai.jpeg" alt="Banner Image">
+    </div>
+    <div class="profile-container">
+        <div class="profile-content">
+            <div class="profile-photo">
+                <img src="images/profile_picture_demo.jpg" alt="Profile Photo">
+            </div>
+            <h1 id="fullname">FULL NAME</h1>
+            <p id="username" class="username">username</p>
+            <p id="email" class="email"><img> example@gmail.com</p>
+            <p id="bio" class="bio">Bio</p>
+            <hr>
+            <p id="description" class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
+                turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem
+                sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat
+                lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.
+                Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis
+                diam sit amet lacinia. Aliquam in elementum tellus.</p>
+        </div>
+    </div>
+    <script src="scripts/axios.min.js"></script>
+    <script src="scripts/api.js"></script>
+    <script>
+        checkLogin()
+
+        const token = localStorage.getItem("token")
+
+        function getProfileData() {
+            api.get("/account/profile/me", {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }).then(resp => {
+                const profileData = resp.data;
+                console.log(profileData);
+                // Update profile data
+                document.querySelector("#fullname").textContent = profileData.first_name + " " + profileData.last_name;
+                // document.querySelector("#username").textContent = profileData.username;
+                document.querySelector("#email").textContent = profileData.email;
+                document.querySelector("#description").textContent = profileData.bio;
+            })
+        }
+
+        getProfileData();
+    </script>
+</body>
+
+</html>

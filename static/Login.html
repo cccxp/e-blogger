@@ -81,7 +81,7 @@
                 if (resp.data.success) {
                     // if success, save token to local storage, then redirect
                     localStorage.setItem("token", resp.data.token)
-                    window.location.href = "index.html";
+                    window.location.href = "Profile.html";
                 } else {
                     // show error message
                     alert(resp.data.message)

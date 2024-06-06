@@ -22,7 +22,7 @@ function checkLogin() {
             }
         }).then(function (resp) {
             console.log(resp.data)
-            if (resp.success) {
+            if (resp.data.success) {
                 // do nothing
             } else {
                 // clear token data
