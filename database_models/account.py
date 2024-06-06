@@ -31,6 +31,7 @@ class User(Base):
     )
     blogs: Mapped[list] = relationship("Blog", back_populates="author", cascade="all, delete-orphan")
 
+    comments: Mapped[list] = relationship("Comment", back_populates="author", cascade="all, delete-orphan")
 
     @classmethod
     async def get_by_email(cls, session: AsyncSession, email: str):
