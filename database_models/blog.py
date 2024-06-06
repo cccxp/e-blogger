@@ -17,6 +17,8 @@ class Blog(Base):
     updated_at: Mapped[str] = mapped_column(nullable=False)
     author: Mapped["User"] = relationship("User", back_populates="blogs")
 
+    comments = relationship("Comment", back_populates="blog")
+
     @classmethod
     async def get_by_id(cls, session: AsyncSession, id: int) -> "Blog":
         return (
@@ -80,3 +82,32 @@ class Blog(Base):
                     for keyword in keywords
                 ))]
         return blogs
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    blog_id: Mapped[int] = mapped_column(ForeignKey("blogs.id"))
+    content: Mapped[str] = mapped_column(nullable=False)
+    author_email: Mapped[str] = mapped_column(ForeignKey("users.email"))
+    created_at: Mapped[str] = mapped_column(nullable=False)
+    
+    blog: Mapped["Blog"] = relationship("Blog", back_populates="comments")
+    author: Mapped["User"] = relationship("User", back_populates="comments")
+
+    @classmethod
+    async def add(cls, session: AsyncSession, blog_id: int, content: str, author_email: str) -> "Comment":
+        current_time = datetime.datetime.now()
+        comment = Comment(blog_id=blog_id, content=content, author_email=author_email,
+                          created_at=current_time, updated_at=current_time)
+        session.add(comment)
+        await session.commit()
+        await session.refresh(comment)
+        return comment
+
+    @classmethod
+    async def delete_by_id(cls, session: AsyncSession, id: int) -> None:
+        comment = await cls.get_by_id(session, id)
+        session.delete(comment)
+        await session.commit()
