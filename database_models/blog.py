@@ -92,15 +92,25 @@ class Comment(Base):
     content: Mapped[str] = mapped_column(nullable=False)
     author_email: Mapped[str] = mapped_column(ForeignKey("users.email"))
     created_at: Mapped[str] = mapped_column(nullable=False)
-    
+
     blog: Mapped["Blog"] = relationship("Blog", back_populates="comments")
     author: Mapped["User"] = relationship("User", back_populates="comments")
+
+    @classmethod
+    async def get_by_id(cls, session: AsyncSession, id: int) -> "Comment":
+        return await session.execute(select(cls).options(joinedload(cls.author)).filter_by(id=id))
+
+    @classmethod
+    async def get_by_author_email(cls, session: AsyncSession, author_email: str) -> list["Comment"]:
+        return (
+            await session.execute(select(cls).options(joinedload(cls.author)).filter_by(author_email=author_email))
+        ).scalars().all()
 
     @classmethod
     async def add(cls, session: AsyncSession, blog_id: int, content: str, author_email: str) -> "Comment":
         current_time = datetime.datetime.now()
         comment = Comment(blog_id=blog_id, content=content, author_email=author_email,
-                          created_at=current_time, updated_at=current_time)
+                          created_at=current_time)
         session.add(comment)
         await session.commit()
         await session.refresh(comment)

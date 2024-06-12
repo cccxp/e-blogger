@@ -133,6 +133,28 @@ class Test_2_CURDBlogs(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
 
 
+class Test_2_CURDComments(unittest.TestCase):
+    base_url = "http://localhost:8000/api/v1"
+
+    def setUp(self):
+        """ Login """
+        resp = requests.post(f'{self.base_url}/account/login', json={
+            'email': 'test@gmail.com',
+            'password': '12345678QWERTY',
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json().get('success'))
+        self.token = resp.json().get('token')
+
+
+    def test_1_add_comment(self):
+        pass 
+
+
+    def test_2_get_and_delete_comments(self):
+        pass 
+
+
 if __name__ == '__main__':
     unittest.main()
 
