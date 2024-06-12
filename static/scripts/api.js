@@ -1,6 +1,7 @@
 const api = axios.create({
+    baseURL: "http://207.148.69.162:10989/api/v1"  // for front-end integration use
     // baseURL: "http://localhost:8000/api/v1"  // for debug use
-    baseURL: "/api/v1"  // for production use
+    // baseURL: "/api/v1"  // for production use
 })
 
 api.interceptors.response.use((resp) => {
