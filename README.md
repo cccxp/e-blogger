@@ -1,6 +1,7 @@
 # E-Blogger
 Group project for SPM WOC7016
 
+**[API Document](http://207.148.69.162:10989/redoc#operation/get_all_blogs_api_v1_blog_all_get)**
 
 ## Basic Setup
 
