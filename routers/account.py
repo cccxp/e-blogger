@@ -9,7 +9,7 @@ from utils import security
 router = APIRouter(prefix='/account')
 
 
-@router.post('/register', response_model=RegisterResponse)
+@router.post('/register', response_model=RegisterResponse, description="Register a new user.")
 async def register(r: RegisterRequest, use_case: AddUser = Depends(AddUser)):
     if not security.email_check(r.email):
         return RegisterResponse(success=False, message='Email format check failed.')
@@ -20,7 +20,7 @@ async def register(r: RegisterRequest, use_case: AddUser = Depends(AddUser)):
     return RegisterResponse(success=success, message=reason)
 
 
-@router.post('/login', response_model=LoginResponse)
+@router.post('/login', response_model=LoginResponse, description="Login a user, get a JWT token.")
 async def login(r: LoginRequest, use_case: LoginCheck = Depends(LoginCheck)):
     token = ''
     success, reason = await use_case.execute(r.email, r.password)
@@ -29,19 +29,19 @@ async def login(r: LoginRequest, use_case: LoginCheck = Depends(LoginCheck)):
     return LoginResponse(success=success, message=reason, token=token)
 
 
-@router.get("/profile/me", response_model=GetUserProfileResponse)
+@router.get("/profile/me", response_model=GetUserProfileResponse, description="Get user profile information.")
 async def get_profile(current_user: str = Depends(security.get_current_user), use_case: GetUserProfile = Depends(GetUserProfile)):
     email, first_name, last_name, profile_picture, bio = await use_case.execute(current_user)
     return GetUserProfileResponse(success=True, message='', email=email, first_name=first_name, last_name=last_name, bio=bio, profile_picture=profile_picture)
 
 
-@router.delete("/profile/me", response_model=DeleteUserResponse)
+@router.delete("/profile/me", response_model=DeleteUserResponse, description="Delete user account.")
 async def delete_account(current_user: str = Depends(security.get_current_user), use_case: DeleteUser = Depends(DeleteUser)):
     await use_case.execute(current_user)
     return DeleteUserResponse(success=True, message='delete successful.')
 
 
-@router.put("/profile/me", response_model=UpdateProfileResponse)
+@router.put("/profile/me", response_model=UpdateProfileResponse, description="Update user profile information.")
 async def update_profile(r: UpdateProfileRequest, current_user: str = Depends(security.get_current_user), use_case: UpdateUserProfile = Depends(UpdateUserProfile)):
     await use_case.execute(current_user, r.password, r.first_name, r.last_name, r.profile_picture, r.bio)
     return UpdateProfileResponse(success=True, message='update successful.')

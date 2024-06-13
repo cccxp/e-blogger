@@ -12,7 +12,7 @@ from utils.security import get_current_user
 router = APIRouter(prefix='/blog')
 
 
-@router.get('/all', response_model=ListBlogResponse)
+@router.get('/all', response_model=ListBlogResponse, description="Get all blogs of the user")
 async def get_all_blogs(user_email: str = Depends(get_current_user), use_case: ListBlogUseCase = Depends(ListBlogUseCase)):
     blogs = await use_case.execute(user_email)
     return ListBlogResponse(success=True, message="Blogs found successfully", blogs=[BlogModel.model_validate({
@@ -26,7 +26,7 @@ async def get_all_blogs(user_email: str = Depends(get_current_user), use_case: L
     }) for blog in blogs])
 
 
-@router.post('/search', response_model=SearchResponse)
+@router.post('/search', response_model=SearchResponse, description="Search blogs by query")
 async def search_blogs(r: SearchRequest, user_email: str = Depends(get_current_user), use_case: SearchBlogUseCase = Depends(SearchBlogUseCase)):
     blogs = await use_case.execute(r.query, user_email)
     return SearchResponse(success=True, message="Search successfully", blogs=[BlogModel.model_validate({
@@ -40,7 +40,7 @@ async def search_blogs(r: SearchRequest, user_email: str = Depends(get_current_u
     }) for blog in blogs])
 
 
-@router.get('/{blog_id}', response_model=GetBlogResponse)
+@router.get('/{blog_id}', response_model=GetBlogResponse, description="Get a blog by id")
 async def get_blog(blog_id: int, user_email: str = Depends(get_current_user), use_case: GetBlogUseCase = Depends(GetBlogUseCase)):
     blog = await use_case.execute(blog_id, user_email)
     return GetBlogResponse(success=True, message="Blog found successfully", blog=BlogModel.model_validate({
@@ -54,19 +54,19 @@ async def get_blog(blog_id: int, user_email: str = Depends(get_current_user), us
     }))
 
 
-@router.post('/add', response_model=AddBlogResponse)
+@router.post('/add', response_model=AddBlogResponse, description="Add a new blog")
 async def add_blog(r: AddBlogRequest, user_email: str = Depends(get_current_user), use_case: AddBlogUseCase = Depends(AddBlogUseCase)):
     await use_case.execute(user_email, r.title, r.content)
     return AddBlogResponse(success=True, message="Blog added successfully")
 
 
-@router.put('/{blog_id}', response_model=UpdateBlogResponse)
+@router.put('/{blog_id}', response_model=UpdateBlogResponse, description="Update blog title or content")
 async def update_blog(blog_id: int, r: UpdateBlogRequest, user_email: str = Depends(get_current_user), use_case: UpdateBlogUseCase = Depends(UpdateBlogUseCase)):
     use_case.execute(blog_id, user_email, r.title, r.content)
     return UpdateBlogResponse(success=True, message="Blog updated successfully")
 
 
-@router.delete('/{blog_id}', response_model=DeleteBlogResponse)
+@router.delete('/{blog_id}', response_model=DeleteBlogResponse, description="Delete a blog")
 async def delete_blog(blog_id: int, user_email: str = Depends(get_current_user), use_case: DeleteBlogUseCase = Depends(DeleteBlogUseCase)):
     await use_case.execute(blog_id, user_email)
     return DeleteBlogResponse(success=True, message="Blog deleted successfully")

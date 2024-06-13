@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title='E-Blogger',
     description='A simple blogging platform built with FastAPI.',
-    version='0.1.0',
+    version='1.0.1',
     lifespan=lifespan
 )
 
